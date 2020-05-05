@@ -18,3 +18,7 @@ body {
 .form-control {
   font-size: 12px;
 }
+
+.nav-item {
+  list-style: none;
+}

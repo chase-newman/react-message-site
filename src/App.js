@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './App.css';
+import Bitcoin from './Components/Bitcoin'; 
+
 
 const API_KEY = "AIzaSyABm1jv-2AjOHuF1VKAknVlih_iJQGxLXs"
 
@@ -34,7 +36,10 @@ class App extends Component {
       },
       contentType: "application/JSON"
     }).then(response => {
-        console.log(response)
+        console.log(response);
+        this.setState({
+          authenticated: true
+        });
     }).catch(err => {
         console.log(err)
     });
@@ -52,19 +57,48 @@ class App extends Component {
       contentType: "application/JSON"
     }).then(response => {
         console.log(response)
+        this.setState({
+          authenticated: true
+        })
     }).catch(err => {
         console.log(err)
     });
   };
+  
+  logoutHandler = () => {
+    this.setState({
+      email: '',
+      password: '',
+      authenticated: false
+    }) 
+  }
   
   render() {
     return (
       <div>
         <nav className="navbar navbar-light bg-light">
          <span className="navbar-brand mb-0 h1">React Message Site</span>
+          {this.state.authenticated ? 
+            <li className="nav-item">
+            <button onClick={this.logoutHandler} className="btn btn-danger">Logout</button>
+          </li> : null }
         </nav>
         <div className="container">
-          <div className="row">
+        {this.state.authenticated ? 
+          <div>
+            <div className="row">
+              <div className="col-sm-10">
+                <h1>Welcome, {this.state.email}</h1>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-sm-10">
+                <Bitcoin />
+                <h3>Post A New Message</h3>
+              </div>
+            </div>
+          </div>
+          : <div className="row">
             <div className="col-lg-6 col-md-10 col-sm-12" id="login-col">
               <h1>Login/SignUp</h1>
               <input 
@@ -80,7 +114,7 @@ class App extends Component {
                 onClick={this.signupHandler}
                 className="btn btn-secondary btn-block">Sign Up</button>
             </div>
-          </div>
+          </div>}
         </div>
       </div>
   );    
